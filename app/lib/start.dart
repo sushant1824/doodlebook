@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:app/PrivacyPolicy.dart';
 import 'package:app/aboutus.dart';
 import 'package:app/contactus.dart';
 import 'package:app/login.dart';
 import 'package:app/pallate.dart';
 import 'package:app/signup.dart';
+import 'package:app/terms_condition.dart';
+import 'package:app/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
 final _lightTheme = ThemeData(
@@ -110,8 +114,8 @@ class _startState extends State<start> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => Policy()));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => termsAndConditions()));
                     },
                     child: Container(
                       child: Text(

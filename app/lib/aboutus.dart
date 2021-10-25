@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:app/monetizationPolicy.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // ignore: use_key_in_widget_constructors
 class AboutUs extends StatelessWidget {
@@ -46,10 +48,40 @@ class AboutUs extends StatelessWidget {
               // ignore: avoid_unnecessary_containers
               Container(
                 // ignore: prefer_const_constructors
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.only(left: 20, right: 20, top: 20),
                 // ignore: prefer_const_constructors
                 child: Text(
-                  "Doodlebook is an entertainment and information driven community of content creators of various domains where they can showcase their talent ,hobbies via creating their own pages and monetize their pages to generate income after qualifying all the thresholds handled by Doodlebook itself. Doodlebook reserves 50% of its profit earned through promotions of its partnered brands to distribute among content content creators.However, the percentage may vary in future depending upon circumstances but to know more about earnings you can go on earnings tab in your profile. Content creators can upload content in any genre in the form of images and videos to entertain their audience.All the content creators should comply with all the terms and conditions to apply for monetization . As users, you can enjoy customized creative feed of your favourite content creators. Dive into the exciting world of Doodlebook and we promise you’ll never have a dull moment ever!",
+                  "Doodlebook is an entertainment and information driven community of content creators of various domains where they can showcase their talent ,hobbies via creating their own pages and monetize their pages to generate income after qualifying all the thresholds handled by Doodlebook itself. Doodlebook reserves 50% of its profit earned through promotions of its partnered brands to distribute among content content creators.However, the percentage may vary in future depending upon circumstances but to know more about earnings you can go on earnings tab in your profile. Content creators can upload content in any genre in the form of images and videos to entertain their audience.All the content creators should comply with all",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontFamily: "SourceSansPro",
+                    fontWeight: FontWeight.w300,
+                    color: Color(0xFF525252),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () async {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => monetizationPolicy()));
+                },
+                child: Container(
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  child: Text(
+                    "the terms and conditions to apply for monetization.",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontFamily: "SourceSansPro",
+                      fontWeight: FontWeight.w300,
+                      color: Colors.blue,
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+                child: Text(
+                  "As users, you can enjoy customized creative feed of your favourite content creators. Dive into the exciting world of Doodlebook and we promise you’ll never have a dull moment ever!",
                   style: TextStyle(
                     fontSize: 18,
                     fontFamily: "SourceSansPro",

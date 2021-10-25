@@ -9,3 +9,9 @@ const Color kWhite = Colors.white;
 
 // ignore: constant_identifier_names
 const Color Kblue = Color(0xff5663ff);
+
+final double appBarPreferredSizeHeight = 60;
+
+getHeight(BuildContext context) => 1;
+
+getWidth(BuildContext context) => MediaQuery.of(context).size.width;

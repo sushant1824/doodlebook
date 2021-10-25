@@ -30,6 +30,7 @@ class _loginState extends State<login> {
       });
       Map<String, dynamic> res = jsonDecode(response.body);
       print(res);
+      print(response.headers);
       if (res["message"].toString().compareTo(
               "Profile Not Found.Please Check Entered Username or Password!") ==
           0) {
@@ -43,7 +44,35 @@ class _loginState extends State<login> {
       } else {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString("username", emailcontroller.text);
-        Navigator.push(context, MaterialPageRoute(builder: (_) => homepage()));
+        Navigator.of(context).pushReplacement(PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) => homepage(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return ScaleTransition(
+                alignment: Alignment.center,
+                scale: animation,
+                child: child,
+              );
+            }));
+      }
+    }
+
+    Future signOut() async {
+      var response =
+          await http.get(Uri.parse("https://doodlebook.in/api/logout"));
+      Map<String, dynamic> res = jsonDecode(response.body);
+      print(res);
+      if (res["message"].toString().compareTo("logout done successfully") ==
+          0) {
+        _scaffoldkey.currentState!.showSnackBar(
+            const SnackBar(content: Text("logout done successfully")));
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.clear();
+        Navigator.of(context).pushReplacement(
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) => login(),
+          ),
+        );
       }
     }
 
@@ -60,7 +89,7 @@ class _loginState extends State<login> {
               ),
             ),
             Container(
-              padding: EdgeInsets.only(left: 20),
+              padding: EdgeInsets.only(left: 35),
               child: Text(
                 "Login",
                 style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
@@ -75,11 +104,36 @@ class _loginState extends State<login> {
                 child: Column(
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.only(left: 30, right: 30, bottom: 20),
                       child: TextFormField(
                         decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Email',
+                            fillColor: Color(0xffDCDCDC),
+                            filled: true,
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.0)),
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.0)),
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 0),
+                            ),
+                            disabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.0)),
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.0)),
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 0),
+                            ),
+                            // labelText: 'Email',
                             hintText: 'Enter mail id'),
                         // autovalidate: true,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -93,12 +147,36 @@ class _loginState extends State<login> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.only(left: 30, right: 30),
                       child: TextFormField(
                         obscureText: true,
                         decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Password',
+                            fillColor: Color(0xffDCDCDC),
+                            filled: true,
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.0)),
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.0)),
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 0),
+                            ),
+                            disabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.0)),
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.0)),
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 0),
+                            ),
                             hintText: 'Enter your secure password'),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (val) {
@@ -112,8 +190,18 @@ class _loginState extends State<login> {
                     ),
                     FlatButton(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => forgotpassword()));
+                        Navigator.of(context).pushReplacement(PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    forgotpassword(),
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              return ScaleTransition(
+                                alignment: Alignment.center,
+                                scale: animation,
+                                child: child,
+                              );
+                            }));
                       },
                       child: Text(
                         'Forgot Password ?',
@@ -141,8 +229,18 @@ class _loginState extends State<login> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => signup()));
+                        Navigator.of(context).pushReplacement(PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    signup(),
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              return ScaleTransition(
+                                alignment: Alignment.center,
+                                scale: animation,
+                                child: child,
+                              );
+                            }));
                       },
                       child: Container(
                         margin: const EdgeInsets.only(left: 20),

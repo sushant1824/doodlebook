@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:app/contactus.dart';
-import 'package:app/custom-page-route.dart';
 import 'package:app/homepage.dart';
 import 'package:app/login.dart';
 import 'package:app/otp.dart';
+import 'package:app/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,6 +28,7 @@ class _signupState extends State<signup> {
   @override
   Widget build(BuildContext context) {
     Future<void> createUser() async {
+      print("creating user");
       var response =
           await http.post(Uri.parse("https://doodlebook.in/api/signup"), body: {
         "username": usernamecontroller.text,
@@ -42,7 +43,8 @@ class _signupState extends State<signup> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString("username", emailcontroller.text);
         print("signup successful");
-        Navigator.push(context, MaterialPageRoute(builder: (_) => homepage()));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => welcome_screen()));
       } else if (res["message"]
               .toString()
               .compareTo("Username Already Exists!") ==
@@ -108,9 +110,15 @@ class _signupState extends State<signup> {
       print(res);
       if (res["success"] == 1) {
         print("object");
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) =>
-                otpPage(originalOtp: res["code"].toString())));
+        bool success = await Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => otpPage(
+                  originalOtp: res["code"].toString(),
+                  email: emailcontroller.text,
+                  userName: usernamecontroller.text,
+                )));
+        if (success) {
+          createUser();
+        }
       } else if (res["message"] ==
           "Profile with this username or email already exists!") {
         _scaffoldkey.currentState!.showSnackBar(const SnackBar(
@@ -126,6 +134,7 @@ class _signupState extends State<signup> {
     }
 
     return Scaffold(
+      key: _scaffoldkey,
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -263,7 +272,18 @@ class _signupState extends State<signup> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(_createRoute());
+                        Navigator.of(context).pushReplacement(PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    login(),
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              return ScaleTransition(
+                                alignment: Alignment.center,
+                                scale: animation,
+                                child: child,
+                              );
+                            }));
                       },
                       child: Container(
                         margin: const EdgeInsets.only(left: 10),
@@ -288,26 +308,5 @@ class _signupState extends State<signup> {
         ),
       ),
     );
-  }
-
-  Route _createRoute() {
-    return PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => login(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          const begin = Offset(0.0, 1.0);
-          const end = Offset.zero;
-          const curve = Curves.ease;
-
-          final tween = Tween(begin: begin, end: end);
-          final curvedAnimation = CurvedAnimation(
-            parent: animation,
-            curve: curve,
-          );
-
-          return SlideTransition(
-            position: tween.animate(curvedAnimation),
-            child: child,
-          );
-        });
   }
 }

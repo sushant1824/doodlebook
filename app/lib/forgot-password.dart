@@ -1,7 +1,13 @@
+import 'dart:convert';
+
 import 'package:app/homepage.dart';
 import 'package:app/login.dart';
 import 'package:app/signup.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
 
 class forgotpassword extends StatefulWidget {
   @override
@@ -9,8 +15,33 @@ class forgotpassword extends StatefulWidget {
 }
 
 class _forgotpasswordState extends State<forgotpassword> {
+  get input => null;
+  TextEditingController emailcontroller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    Future<void> forgotpassfun() async {
+      print("calling API");
+      var response = await http
+          .post(Uri.parse("https://doodlebook.in/api/forgotpassword"), body: {
+        "email": emailcontroller.text,
+      });
+      print("sushn");
+      Map<String, dynamic> res = jsonDecode(response.body);
+      print(res);
+      if (res["success"].toString().compareTo("success") == 0) {
+        print("success");
+        _scaffoldkey.currentState!
+            .showSnackBar(const SnackBar(content: Text("Email Sent!")));
+      } else if (res["status"].toString().compareTo("error") == 0) {
+        _scaffoldkey.currentState!.showSnackBar(
+            const SnackBar(content: Text("No profile have this email!")));
+      } else {
+        _scaffoldkey.currentState!
+            .showSnackBar(const SnackBar(content: Text("Error")));
+      }
+    }
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -45,11 +76,19 @@ class _forgotpasswordState extends State<forgotpassword> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.all(10),
-                      child: TextField(
+                      child: TextFormField(
                         decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'User Name',
                             hintText: 'Enter valid mail id as abc@gmail.com'),
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (val) {
+                          if (val!.isEmpty)
+                            return "Enter valid mail id as abc@gmail.com";
+                          else if (!val.contains("@") || !val.contains("."))
+                            return "Enter valid mail id as abc@gmail.com";
+                        },
+                        controller: emailcontroller,
                       ),
                     ),
                     SizedBox(
@@ -63,8 +102,7 @@ class _forgotpasswordState extends State<forgotpassword> {
                           borderRadius: BorderRadius.circular(20)),
                       child: FlatButton(
                         onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (_) => homepage()));
+                          forgotpassfun();
                         },
                         child: Text(
                           'Send Mail',

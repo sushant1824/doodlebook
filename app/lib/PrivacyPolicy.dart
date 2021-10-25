@@ -44,11 +44,10 @@ class Policy extends StatelessWidget {
               Container(child: Image.asset("assets/privacypolicy.jpg")),
               // ignore: avoid_unnecessary_containers
               Container(
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.only(top: 10.0, left: 10),
                 child: Linkify(
                   text:
                       "At Doodlebook, accessible from www.doodlebook.in,one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Doodlebook and how we use it.\n\nIf you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us.\n\nThis Privacy Policy applies only to our online activities and is valid for visitors to our website with regards to the information that they shared and/or collect in Doodlebook. This policy is not applicable to any information collected offline or via channels other than this website. Our Privacy Policy was created with the help of the Privacy Policy Generator.",
-                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 18,
                     fontFamily: "SourceSansPro",
@@ -357,7 +356,7 @@ class Policy extends StatelessWidget {
               ),
               SizedBox(
                 height: 10,
-              )
+              ),
             ],
           ),
         ),

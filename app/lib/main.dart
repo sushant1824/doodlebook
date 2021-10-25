@@ -3,10 +3,13 @@ import 'package:app/PrivacyPolicy.dart';
 import 'package:app/aboutus.dart';
 import 'package:app/contactus.dart';
 import 'package:app/forgot-password.dart';
+import 'package:app/homepage.dart';
 import 'package:app/login.dart';
 import 'package:app/signup.dart';
 import 'package:app/start.dart';
+import 'package:app/welcome_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,6 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -38,10 +42,17 @@ class _MySplashScreen extends State<MySplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(
-        const Duration(seconds: 1, milliseconds: 500),
-        () => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => start())));
+    Timer(const Duration(seconds: 1, milliseconds: 500), () async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var result = prefs.getString("username");
+      if (result.toString().isEmpty) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => start()));
+      } else {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => homepage()));
+      }
+    });
   }
 
   @override
