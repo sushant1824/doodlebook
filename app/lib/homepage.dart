@@ -11,12 +11,16 @@ import 'navbar.dart';
 import 'package:http/http.dart' as http;
 
 class homepage extends StatefulWidget {
+  final bool isDark;
+  homepage({required this.isDark});
+
   @override
   _homepageState createState() => _homepageState();
 }
 
 class _homepageState extends State<homepage> {
   int pageIndex = 0;
+
   Future<void> gethomepage() async {
     var response = await http.get(
       Uri.parse("https://doodlebook.in/api/home"),
@@ -25,17 +29,51 @@ class _homepageState extends State<homepage> {
     print(response.body);
   }
 
+  //
+  // Future gethomepage() async {
+  //   final response = await http.get(
+  //     Uri.parse("https://doodlebook.in/api/home"),
+  //     //      headers: {
+  //     //   HttpHeaders.authorizationHeader: jwtToken,
+  //     // }
+  //   );
+  //   if (response.statusCode == 200) {
+  //     // var data = ProfileModel.fromJson(json.decode(response.body)[0]);
+  //     // print(data);
+  //     // setState(() {
+  //     //   _username = data.name;
+  //     //   // _location = data.location;
+  //     //   // image = data.image;
+  //     //   // bio = data.Bio;
+  //     //   print("++++++++++");
+  //     //   print(_username);
+  //     // });
+  //     print("respose");
+  //     print(response.body);
+  //   } else {
+  //     throw Exception('Failed to load');
+  //   }
+  // }
+
   @override
   void initState() {
     gethomepage();
     super.initState();
   }
 
+  bool theme(BuildContext ctx) {
+    if (MediaQuery.of(ctx).platformBrightness == Brightness.dark) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
     return Scaffold(
-      drawer: navbar(),
+      drawer: navbar(isDark: theme(context)),
       appBar: CustomAppBar(
         preferredSize: Size(getWidth(context), appBarPreferredSizeHeight),
       ),
