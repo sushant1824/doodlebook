@@ -10,9 +10,17 @@ class saved extends StatefulWidget {
 
 class _savedState extends State<saved> {
   @override
+  bool theme(BuildContext ctx) {
+    if (MediaQuery.of(ctx).platformBrightness == Brightness.dark) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: navbar(),
+      drawer: navbar(isDark: theme(context)),
       appBar: CustomAppBar(
         preferredSize: Size(getWidth(context), appBarPreferredSizeHeight),
       ),

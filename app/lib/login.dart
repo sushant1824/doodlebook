@@ -22,6 +22,14 @@ class _loginState extends State<login> {
 
   @override
   Widget build(BuildContext context) {
+    bool theme(BuildContext ctx) {
+      if (MediaQuery.of(ctx).platformBrightness == Brightness.dark) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     Future<void> loginfun() async {
       var response =
           await http.post(Uri.parse("https://doodlebook.in/api/login"), body: {
@@ -29,8 +37,9 @@ class _loginState extends State<login> {
         "password": passwordcontroller.text,
       });
       Map<String, dynamic> res = jsonDecode(response.body);
-      print(res);
+      print("++++++++++++");
       print(response.headers);
+
       if (res["message"].toString().compareTo(
               "Profile Not Found.Please Check Entered Username or Password!") ==
           0) {
@@ -45,7 +54,8 @@ class _loginState extends State<login> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString("username", emailcontroller.text);
         Navigator.of(context).pushReplacement(PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => homepage(),
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                homepage(isDark: theme(context)),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               return ScaleTransition(

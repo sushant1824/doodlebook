@@ -11,8 +11,15 @@ import 'package:http/http.dart' as http;
 final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
 
 class navbar extends StatelessWidget {
+  late bool dark = false;
+  final bool isDark;
+  navbar({required this.isDark});
+
   @override
   Widget build(BuildContext context) {
+    print("dark22+++++++");
+
+    print(dark);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -87,6 +94,19 @@ class navbar extends StatelessWidget {
                         login(),
                   ),
                 );
+              }),
+          SwitchListTile(
+              title: Text('Dark mode'),
+              value: isDark,
+              onChanged: (bool value) {
+                print("value+++++++");
+                print(value);
+                // setState(() {
+                dark = value;
+                print("dark22+++++++");
+                print(dark);
+                // }
+                // );
               }),
         ],
       ),

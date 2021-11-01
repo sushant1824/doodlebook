@@ -16,16 +16,37 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+
+  final darkTheme = ThemeData.dark().copyWith(
+    primaryColor: Colors.white70,
+    scaffoldBackgroundColor: Colors.black,
+    appBarTheme: AppBarTheme(
+      // textTheme: TextTheme(headline: TextStyle(color: Colors.white)),
+      color: Colors.black,
+      iconTheme: IconThemeData(color: Colors.white),
+      elevation: 10,
+    ),
+  );
+  final lightTheme = ThemeData.light().copyWith(
+    primaryColor: Color(0xFF0074A8),
+    scaffoldBackgroundColor: Color(0xFFFFFFFF),
+    appBarTheme: AppBarTheme(
+      color: Colors.grey.shade100,
+      iconTheme: IconThemeData(color: Colors.black),
+      elevation: 10,
+    ),
+  );
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      home: const MySplashScreen(
+        title: 'Flutter Demo Home Page',
       ),
-      home: const MySplashScreen(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -39,6 +60,14 @@ class MySplashScreen extends StatefulWidget {
 }
 
 class _MySplashScreen extends State<MySplashScreen> {
+  bool theme(BuildContext ctx) {
+    if (MediaQuery.of(ctx).platformBrightness == Brightness.dark) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -50,7 +79,9 @@ class _MySplashScreen extends State<MySplashScreen> {
             context, MaterialPageRoute(builder: (context) => start()));
       } else {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => homepage()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => homepage(isDark: theme(context))));
       }
     });
   }

@@ -77,9 +77,17 @@ class _shareState extends State<share> {
 
   @override
   Widget build(BuildContext context) {
+    bool theme(BuildContext ctx) {
+      if (MediaQuery.of(ctx).platformBrightness == Brightness.dark) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     return MaterialApp(
       home: Scaffold(
-        drawer: navbar(),
+        drawer: navbar(isDark: theme(context)),
         appBar: CustomAppBar(
           preferredSize: Size(getWidth(context), appBarPreferredSizeHeight),
         ),

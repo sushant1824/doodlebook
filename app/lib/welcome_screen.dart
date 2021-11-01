@@ -28,14 +28,22 @@ class welcome_screen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool theme(BuildContext ctx) {
+      if (MediaQuery.of(ctx).platformBrightness == Brightness.dark) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           body: IntroductionScreen(
             done: GestureDetector(
               onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => homepage()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => homepage(isDark: theme(context))));
               },
               child: Text(
                 "Done",
